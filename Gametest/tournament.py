@@ -39,11 +39,4 @@ class Tournament:
         self.time_control = time_control
         self.description = description
 
-    def show_tournament_informations(self):
-        """Show tournament information"""
-        print("Bienvenue chers spectateurs nous allons commencer le tournoi '{}' qui se déroule à '{}',\
-         nous sommes le {}. il y aura '{}' participants pour '{}' rounds".format(self.name,
-                                                                                 self.place,
-                                                                                 self.date,
-                                                                                 self.player_numbers,
-                                                                                 self.number_of_rounds))
+

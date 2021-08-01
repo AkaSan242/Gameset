@@ -23,3 +23,7 @@ class Player:
     def __str__(self):
         """Used in print"""
         return f"'{self.name}'"
+
+    def __repr__(self):
+        """Used in print"""
+        return f"'{self.name}'"

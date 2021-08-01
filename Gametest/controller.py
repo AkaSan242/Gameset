@@ -9,18 +9,21 @@ from tournamentview import TournamentView
 game = PlayerView()
 tour = TournamentView()
 
+tournament = {'Nom': '', 'Lieu': '', 'Date': '', 'Nombres de tours': '', 'Rounds': '', 'Joueurs': '',
+              'Contrôle du temps': '', 'Déscription': ''}
 match = []
 players_list = []
 players = []
-tournament_list = []
-round_one_list = []
-round_two_list = []
-round_three_list = []
-round_four_list = []
+rank_sup = {'1': '', '2': '', '3': '', '4': ''}
+rank_inf = {'5': '', '6': '', '7': '', '8': ''}
+ranking = rank_sup, rank_inf
+round = {'1': '', '2': '', '3': '', '4': ''}
+round_match = []
 score = []
 score_two = []
 
 def choice():
+
     choice = input()
     if choice == "1":
         game.add_a_new_player(players_list)
@@ -29,7 +32,7 @@ def choice():
         game.show_list_players(players_list)
         back_to_main_page()
     elif choice == "3":
-        tour.new_tournament(tournament_list)
+        tour.new_tournament(tournament)
         if len(players_list) < Tournament.NUMBER_OF_PLAYERS:
             print("Il n'y a pas assez de joueurs disponible pour un tournoi dans la liste\
              ( Joueurs requis:'{}' Disponible:'{}' )".format(Tournament.NUMBER_OF_PLAYERS, len(players_list)))
@@ -40,34 +43,34 @@ def choice():
                 print("Ajout d'un nouveau joueur {} sur {}".format(len(players), Tournament.NUMBER_OF_PLAYERS))
 
         game.show_players(players)
+        tournament["Joueurs"] = str(players)
         sleep(2)
         print("Nous allons commencer le tirage au sort...")
         sleep(2)
-        for i in range(Tournament.NUMBER_OF_ROUNDS):
-            tour.match(players, round_one_list)
-        tour.show_tournament_match(round_one_list)
+        tour.rank_player_sup(players, rank_sup)
+        tour.rank_player_inf(players, rank_inf)
+        tour.first_match(rank_sup, rank_inf, match)
+        round_match.append(match)
+        tour.show_tournament_match(round_match)
         sleep(5)
+        round["1"] = str(round_match)
         tour.update_player_score(players, score)
-        tour.update_player_rank(players)
+        tour.update_player_rank(players, rank_sup, rank_inf)
+        print("Classement:")
+        print(ranking)
+        sleep(5)
+        round_match.clear()
+        tour.tournament_match(rank_sup, rank_inf, match)
+        round_match.append(match)
+        tour.show_tournament_match(round_match)
+        sleep(5)
+        round["2"] = str(round_match)
+        tour.update_player_score(players, score)
+        tour.update_player_rank(players, rank_sup, rank_inf)
         tour.show_players_status(players)
+        print("Classement:")
+        print(ranking)
         sleep(5)
-        for i in range(Tournament.NUMBER_OF_ROUNDS):
-            tour.match(players, round_two_list)
-        tour.show_tournament_match(round_two_list)
-        sleep(5)
-        tour.update_player_score(players, score_two)
-        tour.update_player_rank(players)
-        tour.show_players_status(players)
-        sleep(5)
-        continuer()
-        for i in range(Tournament.NUMBER_OF_ROUNDS):
-            tour.match(players, round_three_list)
-        tour.show_tournament_match(round_three_list)
-        sleep(2)
-        for i in range(Tournament.NUMBER_OF_ROUNDS):
-            tour.match(players, round_four_list)
-        tour.show_tournament_match(round_four_list)
-        sleep(2)
     elif choice == "4":
         print(Tournament.__doc__)
         back_to_main_page()

@@ -18,8 +18,8 @@ class Tournament:
             -description of the tournament
             """
 
-    NUMBER_OF_PLAYERS = 4
-    NUMBER_OF_ROUNDS = 2
+    NUMBER_OF_PLAYERS = 8
+    NUMBER_OF_ROUNDS = 4
 
     def __init__(self,
                  name,

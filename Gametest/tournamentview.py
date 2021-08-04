@@ -1,45 +1,8 @@
 """Base Tournament view"""
 
-from tournament import Tournament
-from time import  sleep
 
 class TournamentView:
     """Gameset Tournament view"""
-
-    def new_tournament(self, tournament_dic):
-        """Start a new tournament"""
-        name = input("Quel est le Nom du Tournoi:")
-        place = input("lieu du Tournoi:")
-        time_control = input("Controle du temps (Bullet, Blitz ou Coup Rapide):")
-
-        new_tournament = Tournament(name, place, time_control)
-        tournament_dic.update({"Nom": "{}".format(new_tournament.name),
-                               "Lieu": "{}".format(new_tournament.place),
-                               "Date": "{}".format(new_tournament.date),
-                               "Contrôle du temps": "{}".format(new_tournament.time_control),
-                               "Nombres de tours": "{}".format(new_tournament.NUMBER_OF_ROUNDS)})
-
-        print("Création du nouveau Tournoi '{}'".format(name))
-        TournamentView.show_tournament_informations(self,
-                                                    name,
-                                                    place,
-                                                    time_control,
-                                                    new_tournament.date,
-                                                    new_tournament.NUMBER_OF_PLAYERS,
-                                                    new_tournament.NUMBER_OF_ROUNDS)
-
-    def choose_a_player(self, player_list, tournament_players_list):
-        """Select a player for the tournament"""
-        i = 0
-        for elt in player_list:
-            print("{}.{}".format(i, elt))
-            i += 1
-
-        choose_player = input("Choisissez un joueur (entrez son numéro):")
-        player = player_list[int(choose_player)]
-        print("Vous avez choisi:{}".format(player))
-        sleep(2)
-        tournament_players_list.append(player)
 
     def rank_player_sup(self, players, rank_sup):
         """Seperate players for match"""
@@ -57,12 +20,13 @@ class TournamentView:
 
     def show_tournament_informations(self, name, place, time_control, date, player_numbers, number_of_rounds):
         """Show tournament information"""
-        print("Tournoi:'{}' Lieu:'{}' Date:'{}' Participants:'{}' Rounds:'{}' Contrôle du temps:'{}' ".format(name,
-                                                                                                              place,
-                                                                                                              date,
-                                                                                                    player_numbers,
-                                                                                                  number_of_rounds,
-                                                                                                    time_control))
+        print("Tournoi:'{}' Lieu:'{}' Date:'{}' Participants:'{}' Rounds:'{}' Contrôle du temps:'{}' ".format
+              (name,
+               place,
+               date,
+               player_numbers,
+               number_of_rounds,
+               time_control))
 
     def first_match(self, rank_sup, rank_inf, match_list):
         """define the match of the first round only"""

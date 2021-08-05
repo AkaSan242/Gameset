@@ -1,5 +1,7 @@
 """Base Tournament view"""
 
+from operator import attrgetter
+
 
 class TournamentView:
     """Gameset Tournament view"""
@@ -10,6 +12,15 @@ class TournamentView:
         for player in players:
             ranks["{}".format(i)] = player
             i += 1
+
+    def player_ranking(self, player_list, ranks):
+        """Ranking player by score"""
+        new_ranking = sorted(player_list, key=attrgetter('score'), reverse=True)
+        i = 1
+        for elt in new_ranking:
+            print("{}.{}".format(i, elt))
+            i += 1
+        self.rank_player(new_ranking, ranks)
 
     def show_tournament_informations(self, name, place, time_control, date, player_numbers, number_of_rounds):
         """Show tournament information"""

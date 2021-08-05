@@ -16,17 +16,16 @@ class PlayerController(PlayerView):
         player_gender = input("Sexe (Homme, Femme, Personnel):")
         player_rank = input("Classement:")
 
-        new_player = Player(player_name,
-                            player_last_name,
-                            player_birth_date,
-                            player_gender,
-                            player_rank)
+        player_list.append(Player(player_name,
+                                  player_last_name,
+                                  player_birth_date,
+                                  player_gender,
+                                  player_rank))
 
-        player_list.append(new_player)
         print("Ajout du nouveau joueur '{}' terminé".format(player_name))
         sleep(2)
-        self.show_player(new_player.name, new_player.last_name, new_player.birth_date,
-                         new_player.gender, new_player.rank)
+        self.show_player(player_name, player_last_name, player_birth_date,
+                         player_gender, player_rank)
 
     def update_player_rank(self, player_list):
         """Update player rank"""

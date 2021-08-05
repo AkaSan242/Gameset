@@ -16,9 +16,7 @@ match = []
 round = {'1': '', '2': '', '3': '', '4': ''}
 score = []
 
-rank_sup = {'1': '', '2': '', '3': '', '4': ''}
-rank_inf = {'5': '', '6': '', '7': '', '8': ''}
-ranking = rank_sup, rank_inf
+ranks = {}
 
 
 class Controller(PlayerController, TournamentController):
@@ -61,9 +59,8 @@ class Controller(PlayerController, TournamentController):
             sleep(2)
             print("Nous allons commencer le tirage au sort...")
             sleep(2)
-            self.rank_player_sup(tournament_players, rank_sup)
-            self.rank_player_inf(tournament_players, rank_inf)
-            self.first_match(rank_sup, rank_inf, match)
+            self.rank_player(tournament_players, ranks)
+            self.first_match(ranks, match)
             self.show_tournament_match(match)
             sleep(5)
             round["1"] = str(match)
@@ -74,7 +71,7 @@ class Controller(PlayerController, TournamentController):
             self.player_ranking(tournament_players)
             sleep(5)
             match.clear()
-            self.tournament_match(rank_sup, rank_inf, match)
+            self.tournament_match(ranks, match)
             self.show_tournament_match(match)
             sleep(5)
         elif choice == "4":

@@ -26,4 +26,4 @@ class Player:
 
     def __repr__(self):
         """Used in print"""
-        return f"'{self.name}'"
+        return f"'{self.name} {self.last_name}'"

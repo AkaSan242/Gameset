@@ -1,6 +1,7 @@
 """Base Player view."""
 
 from tournament import Tournament
+from operator import attrgetter
 
 
 class PlayerView:
@@ -32,9 +33,16 @@ class PlayerView:
         """Show all Players status after round"""
         print("Voici le nouveau classement et score des joueurs après ce round:")
         for player in player_list:
-            print("Joueur: {} Classement: {} Score: {} Points".format(player, player.rank, player.score))
+            print("Joueur: {} Score: {} Points".format(player, player.score))
 
     def player_ranking(self, player_list):
         """Ranking player by score"""
-        new_ranking = sorted(player_list)
-        print(new_ranking)
+        new_ranking = sorted(player_list, key=attrgetter('score'), reverse=True)
+        i = 1
+        for elt in new_ranking:
+            print("{}.{}".format(i, elt))
+            i += 1
+
+        return new_ranking
+
+

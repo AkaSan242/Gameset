@@ -3,23 +3,20 @@
 import sys
 from time import sleep
 from tournament import Tournament
-from playercontroller import PlayerController
 from tournamentcontroller import TournamentController
 
 game_players = []
-
+game_tournament = []
 tournament_players = []
 tournament_list = []
 tournament = {'Nom': '', 'Lieu': '', 'Date': '', 'Nombres de tours': '', 'Rounds': '', 'Joueurs': '',
               'Contrôle du temps': '', 'Déscription': '', 'Vainqueur': ''}
 match = []
-round = {'1': '', '2': '', '3': '', '4': ''}
-score = []
-
+round = {}
 ranks = {}
 
 
-class Controller(PlayerController, TournamentController):
+class Controller(TournamentController):
     """Gameset Main Controller"""
 
     def choose(self):
@@ -29,14 +26,30 @@ class Controller(PlayerController, TournamentController):
             self.add_a_new_player(game_players)
             self.back_to_main_page()
         elif choice == "2":
-            self.show_list_players(game_players)
-            update = input("Voulez-vous modifier le classement d'un joueur\
-            1.Oui/2.Non:")
-            if update == 1 or "1":
-                self.update_player_rank(game_players)
+            if len(game_players) == 0:
+                print("Il n'y a aucun joueurs dans la liste")
                 self.back_to_main_page()
-            elif update == 2 or "2":
-                self.back_to_main_page()
+            else:
+                search_by = input("Vous voulez la liste des Joueurs par\
+                              1.Ordre Alphabétique 2.Classement:")
+                if search_by == 1 or "1":
+                    self.search_player_by_name(game_players)
+                    update = input("Voulez-vous modifier le classement d'un joueur\
+                            1.Oui/2.Non:")
+                    if update == 1 or "1":
+                        self.update_player_rank(game_players)
+                        self.back_to_main_page()
+                    else:
+                        self.back_to_main_page()
+                elif search_by == 2 or "2":
+                    self.search_player_by_rank(game_players)
+                    update = input("Voulez-vous modifier le classement d'un joueur\
+                                            1.Oui/2.Non:")
+                    if update == 1 or "1":
+                        self.update_player_rank(game_players)
+                        self.back_to_main_page()
+                    else:
+                        self.back_to_main_page()
         elif choice == "3":
             if len(game_players) < Tournament.NUMBER_OF_PLAYERS:
                 print("Il n'y a pas assez de joueurs disponible pour un tournoi dans la liste\
@@ -60,33 +73,30 @@ class Controller(PlayerController, TournamentController):
             print("Nous allons commencer le tirage au sort...")
             sleep(2)
             self.rank_player(tournament_players, ranks)
-            self.first_match(ranks, match)
-            self.show_tournament_match(match)
-            sleep(5)
-            round["1"] = str(match)
-            self.update_player_score(tournament_players)
-            self.show_players_status(tournament_players)
-            sleep(3)
-            print("Classement:")
-            self.player_ranking(tournament_players, ranks)
-            print(ranks)
-            sleep(5)
-            match.clear()
-            self.tournament_match(ranks, match)
-            self.show_tournament_match(match)
-            sleep(5)
+            for i in range(Tournament.NUMBER_OF_ROUNDS):
+                self.tournament_round(tournament_players, ranks, round, match)
+                self.continuer()
+            tournament['Vainqueur'] = ranks['1']
+            tournament['Rounds'] = str(round)
+            print("Le gagnant du Tournoi {} est: '{}'".format(tournament['Nom'], tournament['Vainqueur']))
+            game_tournament.append(tournament)
         elif choice == "4":
-            print(Tournament.__doc__)
-            self.back_to_main_page()
+            if len(game_tournament) == 0:
+                print("Aucun Tournoi enregistrer")
+                self.back_to_main_page()
+            else:
+                print(game_tournament)
+                self.back_to_main_page()
         elif choice == "5":
+            print("GAMESET ET MAT ! CIAO")
             sys.exit()
 
     def continuer(self):
         continuer = input("Voulez-vous continuer ?\
     1.Oui/2.Non:")
         if continuer == "1" or 1:
-            pass
-        elif continuer == "2" or 2:
+            return
+        else:
             self.tournament_main_page()
             self.choose()
 

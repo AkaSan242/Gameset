@@ -3,9 +3,10 @@
 from tournament import Tournament
 from time import sleep
 from tournamentview import TournamentView
+from playercontroller import PlayerController
 
 
-class TournamentController(TournamentView):
+class TournamentController(TournamentView, PlayerController):
     """Gameset Tournament Controller"""
 
     def new_tournament(self, tournament_dic):
@@ -44,3 +45,32 @@ class TournamentController(TournamentView):
         print("Vous avez choisi:{}".format(player))
         sleep(2)
         tournament_players_list.append(player)
+
+    def tournament_round(self, player_list, ranks_dic, round_dic, match_list):
+        """Define tournament round"""
+        if len(round_dic) == 0:
+            round_number = 1
+            self.first_match(ranks_dic, match_list)
+            self.show_tournament_match(match_list)
+            sleep(5)
+            round_dic["{}".format(round_number)] = str(match_list)
+            self.update_player_score(player_list)
+            self.show_players_status(player_list)
+            sleep(3)
+            print("Classement:")
+            self.player_ranking(player_list, ranks_dic)
+            sleep(5)
+            match_list.clear()
+        elif len(round_dic) > 0:
+            round_number = len(ranks_dic) + 1
+            self.tournament_match(ranks_dic, match_list)
+            self.show_tournament_match(match_list)
+            sleep(5)
+            round_dic["{}".format(round_number)] = str(match_list)
+            self.update_player_score(player_list)
+            self.show_players_status(player_list)
+            sleep(3)
+            print("Classement:")
+            self.player_ranking(player_list, ranks_dic)
+            sleep(5)
+            match_list.clear()

@@ -3,6 +3,7 @@
 from time import sleep
 from player import Player
 from playerview import PlayerView
+from operator import attrgetter
 
 
 class PlayerController(PlayerView):
@@ -46,3 +47,20 @@ class PlayerController(PlayerView):
             add_score = input("Quel est le score de {}:".format(player))
             score = add_score
             player.score += int(score)
+
+
+    def search_player_by_name(self, player_list):
+        """Print Player_list by Name"""
+        new_ranking = sorted(player_list, key=attrgetter('name'))
+        i = 1
+        for elt in new_ranking:
+            print("{}.{}".format(i, elt))
+            i += 1
+
+    def search_player_by_rank(self, player_list):
+        """Print Player_list by Rank"""
+        new_ranking = sorted(player_list, key=attrgetter('rank'))
+        i = 1
+        for elt in new_ranking:
+            print("{}.{}".format(i, elt))
+            i += 1

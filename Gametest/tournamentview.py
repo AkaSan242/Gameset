@@ -69,5 +69,5 @@ class TournamentView:
         print("1.Ajouter un Joueur")
         print("2.Liste des joueurs")
         print("3.Tournoi")
-        print("4.Description")
+        print("4.Liste des Tournois")
         print("5.Quitter")

@@ -38,6 +38,7 @@ class PlayerController(PlayerView):
         player = player_list[int(choose_player)]
         new_rank = input("Quel est le nouveau classement de {}:".format(player))
         player.rank = new_rank
+        print("Nouveau classement de {} confirmé".format(player))
 
     def update_player_score(self, player_list):
         """Add score for player after round"""

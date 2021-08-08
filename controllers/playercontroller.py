@@ -40,6 +40,7 @@ class PlayerController(PlayerView):
 
         choose_player = input("Choisissez un joueur (entrez son numéro):")
         player = player_list[int(choose_player)]
+
         new_rank = input("Quel est le nouveau classement de {}:".format(player))
         player.rank = new_rank
         print("Nouveau classement de {} confirmé".format(player))
@@ -52,7 +53,6 @@ class PlayerController(PlayerView):
             add_score = input("Quel est le score de {}:".format(player))
             score = add_score
             player.score += int(score)
-
 
     def search_player_by_name(self, player_list):
         """Print Player_list by Name"""

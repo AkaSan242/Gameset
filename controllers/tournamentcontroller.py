@@ -61,23 +61,28 @@ class TournamentController(TournamentView, PlayerController):
             self.first_match(ranks_dic, match_list)
             self.show_tournament_match(match_list)
             sleep(5)
+
             round_dic["{}".format(round_number)] = str(match_list)
             self.update_player_score(player_list)
             self.show_players_status(player_list)
             sleep(3)
+
             print("Classement:")
             self.player_ranking(player_list, ranks_dic)
             sleep(5)
             match_list.clear()
+
         elif len(round_dic) > 0:
             round_number = len(ranks_dic) + 1
             self.tournament_match(ranks_dic, match_list)
             self.show_tournament_match(match_list)
             sleep(5)
+
             round_dic["{}".format(round_number)] = str(match_list)
             self.update_player_score(player_list)
             self.show_players_status(player_list)
             sleep(3)
+
             print("Classement:")
             self.player_ranking(player_list, ranks_dic)
             sleep(5)
@@ -98,7 +103,7 @@ class TournamentController(TournamentView, PlayerController):
     def choose_tournament_info(self, tournament_dict):
         """use to choose the informations to show"""
         choice = input()
-        if choice == 1:
+        if choice == "1":
             print(tournament_dict['Joueurs'])
-        elif choice == 2:
+        elif choice == "2":
             print(tournament_dict['Rounds'])

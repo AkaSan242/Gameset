@@ -92,6 +92,7 @@ class Controller(TournamentController):
             for i in range(Tournament.NUMBER_OF_ROUNDS):
                 self.tournament_round(self.tournament_player_list, self.ranks_dic, self.round_dic, self.match_list)
                 self.continuer()
+                self.change_ranking()
 
             self.tournament_dic['Vainqueur'] = self.ranks_dic['1']
             self.tournament_dic['Rounds'] = str(self.round_dic)
@@ -101,6 +102,7 @@ class Controller(TournamentController):
             resume = input("Quelles sont les remarques générales de ce Tournoi:")
             self.tournament_dic['Déscription'] = resume
             self.tournament_list.append(self.tournament_dic)
+            self.back_to_main_page()
 
         # Liste des Tournois
         elif choice == "4":
@@ -118,15 +120,32 @@ class Controller(TournamentController):
             sys.exit()
 
     def continuer(self):
+        """Use to check if you want to continue the tournament or save"""
         continuer = input("Voulez-vous continuer ?\
     1.Oui/2.Non:")
+
         if continuer == "2":
             self.tournament_main_page()
             self.choose()
+
         elif continuer == "1":
             print("THE SHOW GOES ON ! ")
 
+    def change_ranking(self):
+        """Use if you want to change a player rank during a tournament"""
+        change = input("Voulez changer le classement général d'un ou plusieurs joueurs  ?\
+        1.Oui/2.Non:")
+
+        if change == "1":
+            number = input("Combien de classement voulez vous changer (Entrez un numéro):")
+            for i in range(int(number)):
+                self.update_player_rank(self.player_list)
+
+        elif change == "2":
+            pass
+
     def back_to_main_page(self):
+        """Print Main menu"""
         self.tournament_main_page()
         self.choose()
 

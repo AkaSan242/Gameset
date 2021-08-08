@@ -102,6 +102,7 @@ class Controller(TournamentController):
             resume = input("Quelles sont les remarques générales de ce Tournoi:")
             self.tournament_dic['Déscription'] = resume
             self.tournament_list.append(self.tournament_dic)
+            self.tournament_player_list.clear()
             self.back_to_main_page()
 
         # Liste des Tournois

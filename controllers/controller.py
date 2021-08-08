@@ -1,6 +1,8 @@
 """Define the main controller"""
 
 import sys
+sys.path.append('../models')
+from models.tournament import Tournament
 from time import sleep
 from .tournamentcontroller import TournamentController
 
@@ -76,7 +78,7 @@ class Controller(TournamentController):
             else:
                 self.new_tournament(self.tournament_dic)
                 sleep(2)
-                for i in range(Tournament.NUMBER_OF_PLAYERS):
+                while len(self.tournament_player_list) < Tournament.NUMBER_OF_PLAYERS:
                     self.choose_a_player(self.player_list, self.tournament_player_list)
                     print("Ajout d'un nouveau joueur {} sur {}".format(len(self.tournament_player_list),
                                                                        Tournament.NUMBER_OF_PLAYERS))
@@ -106,7 +108,8 @@ class Controller(TournamentController):
                 print("Aucun Tournoi enregistrer")
                 self.back_to_main_page()
             else:
-                print(self.tournament_list)
+                print("Voici la liste des Tournois:")
+                self.check_tournament_list(self.tournament_list)
                 self.back_to_main_page()
 
         # Quitter

@@ -46,9 +46,13 @@ class TournamentController(TournamentView, PlayerController):
 
         choose_player = input("Choisissez un joueur (entrez son numéro):")
         player = player_list[int(choose_player)]
-        print("Vous avez choisi:{}".format(player))
-        sleep(2)
-        tournament_players_list.append(player)
+        if player in tournament_players_list:
+            print("Ce joueur est déja pris")
+            sleep(2)
+        else:
+            print("Vous avez choisi:{}".format(player))
+            sleep(2)
+            tournament_players_list.append(player)
 
     def tournament_round(self, player_list, ranks_dic, round_dic, match_list):
         """Define tournament round"""
@@ -78,3 +82,23 @@ class TournamentController(TournamentView, PlayerController):
             self.player_ranking(player_list, ranks_dic)
             sleep(5)
             match_list.clear()
+
+    def check_tournament_list(self, tournament_list):
+        """Use to check informations about all tournaments"""
+        for elt in tournament_list:
+            index = tournament_list.index(elt)
+            print("{}.{}".format(index, elt))
+
+        tournament_choice = input("Choisissez le tournoi à consulter (Entrez son numéro)")
+        tournament = tournament_list[int(tournament_choice)]
+
+        self.tournament_list_main_page(tournament)
+        self.choose_tournament_info(tournament)
+
+    def choose_tournament_info(self, tournament_dict):
+        """use to choose the informations to show"""
+        choice = input()
+        if choice == 1:
+            print(tournament_dict['Joueurs'])
+        elif choice == 2:
+            print(tournament_dict['Rounds'])

@@ -71,3 +71,13 @@ class TournamentView:
         print("3.Tournoi")
         print("4.Liste des Tournois")
         print("5.Quitter")
+
+    def tournament_list_main_page(self, tournament_dict):
+        """Print Tournament list Main menu"""
+        print("Tournoi:'{}' Vainqueur:'{}' Date:'{}' Lieu:'{}'".format(tournament_dict['Nom'],
+                                                                       tournament_dict['Vainqueur'],
+                                                                       tournament_dict['Date'],
+                                                                       tournament_dict['Lieu']))
+        print("1.Liste des Participants")
+        print("2.Listes des Rounds et Matchs")
+

@@ -21,7 +21,10 @@ class TournamentView:
             print("{}.{}".format(i, elt))
             i += 1
         self.rank_player(new_ranking, ranks)
-        tournament_dic['Classement'] = new_ranking
+        tournament_dic['Classement (par Rang)'] = new_ranking
+
+        new_ranking_name = sorted(player_list, key=attrgetter('name'))
+        tournament_dic['Classement (par Nom)'] = new_ranking_name
 
     def show_tournament_informations(self, name, place, time_control, date, player_numbers, number_of_rounds):
         """Show tournament information"""
@@ -75,10 +78,11 @@ class TournamentView:
 
     def tournament_list_main_page(self, tournament_dict):
         """Print Tournament list Main menu"""
-        print("Tournoi:'{}' Vainqueur:'{}' Date:'{}' Lieu:'{}'".format(tournament_dict['Nom'],
+        print("Tournoi:'{}' Vainqueur:'{}' Date:'{}' Lieu:'{}' Contrôle du Temps:'{}'".format(tournament_dict['Nom'],
                                                                        tournament_dict['Vainqueur'],
                                                                        tournament_dict['Date'],
-                                                                       tournament_dict['Lieu']))
+                                                                       tournament_dict['Lieu'],
+                                                                       tournament_dict['Contrôle du temps']))
         print("1.Liste des Participants")
         print("2.Listes des Rounds et Matchs")
 

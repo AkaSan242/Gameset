@@ -106,8 +106,15 @@ class TournamentController(TournamentView, PlayerController):
         """use to choose the informations to show"""
         choice = input()
         if choice == "1":
-            print(tournament_dict['Joueurs'])
-            print(tournament_dict['Classement'])
+            print("Vous souhaitez la liste par:")
+            print("1.Nom")
+            print("2.Classeement")
+
+            list_by = input()
+            if list_by == "1":
+                print(tournament_dict['Classement (par Nom)'])
+            elif list_by == "2":
+                print(tournament_dict['Classement (par Rang)'])
 
         elif choice == "2":
             print(tournament_dict['Rounds'])

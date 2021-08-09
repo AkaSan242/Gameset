@@ -37,6 +37,19 @@ class PlayerView:
         for player in player_list:
             print("Joueur: {} Score: {} Points".format(player, player.score))
 
+    def update_delete_player_main_page(self):
+        """Main menu of update/delete player"""
+        print("Voulez-vous:")
+        print("1.Modifier un joueur")
+        print("2.Supprimer un joueur")
 
+    def update_player_page(self):
+        """Main page of choice update player"""
+        print("Que voulez-vous modifier")
+        print("1.Nom")
+        print("2.Prénom")
+        print("3.Date de Naissance")
+        print("4.Genre")
+        print("5.Classement")
 
 

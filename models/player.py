@@ -17,7 +17,7 @@ class Player:
         self.last_name = last_name
         self.birth_date = birth_date
         self.gender = gender
-        self.rank = int(rank)
+        self.rank = rank
         self.score = int(score)
 
     def __str__(self):

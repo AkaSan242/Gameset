@@ -38,25 +38,22 @@ class Controller(TournamentController):
                 print("Il n'y a aucun joueurs dans la liste")
                 self.back_to_main_page()
             else:
-                search_by = input("Vous voulez la liste des Joueurs par\
-                1.Ordre Alphabétique 2.Classement:")
+                search_by = input("Vous voulez la liste des Joueurs par 1.Ordre Alphabétique/2.Classement:")
 
                 if search_by == "1":
                     self.search_player_by_name(self.player_list)
-                    update = input("Voulez-vous modifier le classement d'un joueur\
-                            1.Oui/2.Non:")
+                    update = input("Voulez-vous modifier les informations d'un joueur ? 1.Oui/2.Non:")
                     if update == "1":
-                        self.update_player_rank(self.player_list)
+                        self.update_delete_player(self.player_list)
                         self.back_to_main_page()
                     elif update == "2":
                         self.back_to_main_page()
 
                 elif search_by == "2":
                     self.search_player_by_rank(self.player_list)
-                    update = input("Voulez-vous modifier le classement d'un joueur\
-                                            1.Oui/2.Non:")
+                    update = input("Voulez-vous modifier les informations d'un joueur ? 1.Oui/2.Non:")
                     if update == "1":
-                        self.update_player_rank(self.player_list)
+                        self.update_delete_player(self.player_list)
                         self.back_to_main_page()
                     elif update == "2":
                         self.back_to_main_page()
@@ -90,7 +87,9 @@ class Controller(TournamentController):
             sleep(2)
             self.rank_player(self.tournament_player_list, self.ranks_dic)
             for i in range(Tournament.NUMBER_OF_ROUNDS):
-                self.tournament_round(self.tournament_player_list, self.ranks_dic, self.round_dic, self.match_list)
+                self.tournament_round(self.tournament_player_list,
+                                      self.ranks_dic, self.round_dic,
+                                      self.match_list, self.tournament_dic)
                 self.continuer()
                 self.change_ranking()
 

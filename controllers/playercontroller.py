@@ -45,6 +45,55 @@ class PlayerController(PlayerView):
         player.rank = new_rank
         print("Nouveau classement de {} confirmé".format(player))
 
+    def update_delete_player(self, player_list):
+        """Update player informations or delete player"""
+        self.update_delete_player_main_page()
+        choice = input()
+        if choice == "1":
+            for i in range(len(player_list)):
+                print("{}.{}".format(i, player_list[i]))
+
+            choose_player = input("Choisissez le joueur à modifier (entrez son numéro):")
+            player = player_list[int(choose_player)]
+
+            self.update_player_page()
+            self.update_player_info(player)
+
+        elif choice == "2":
+            for i in range(len(player_list)):
+                print("{}.{}".format(i, player_list[i]))
+
+            choose_player = input("Choisissez le joueur à Supprimer (entrez son numéro):")
+            del player_list[int(choose_player)]
+            print("Joueur supprimer")
+
+    def update_player_info(self, player):
+        """Update player informations"""
+        choice = input()
+        if choice == "1":
+            last_name = input("Quel est le nouveau Nom de {}:".format(player.name))
+            player.last_name = last_name
+            print("Nouveau Nom confirmé: {}".format(player.last_name))
+
+        elif choice == "2":
+            name = input("Quel est le nouveau Prénom de {}:".format(player.name))
+            player.name = name
+            print("Nouveau Prénom confirmé: {}".format(player.name))
+
+        elif choice == "3":
+            birth_date = input("Quel est la nouvelle Date de Naissance de {}:".format(player.name))
+            player.birth_date = birth_date
+            print("Nouvelle Date de Naissance confirmé: {}".format(player.birth_date))
+
+        elif choice == "4":
+            gender = input("Quel est le nouveau genre de {}:".format(player.name))
+            player.gender = gender
+            print("Nouveau Genre confirmé: {}".format(player.gender))
+
+        elif choice == "5":
+            rank = input("Quel est le nouveau classement de {}:".format(player.name))
+            player.rank = rank
+
     def update_player_score(self, player_list):
         """Add score for player after round"""
         print("C'est l'heure d'ajouter les résultats:")

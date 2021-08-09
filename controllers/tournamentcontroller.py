@@ -54,31 +54,33 @@ class TournamentController(TournamentView, PlayerController):
             sleep(2)
             tournament_players_list.append(player)
 
-    def tournament_round(self, player_list, ranks_dic, round_dic, match_list):
+    def tournament_round(self, player_list, ranks_dic, round_dic, match_list, tournament_dic):
         """Define tournament round"""
         if len(round_dic) == 0:
             round_number = 1
             self.first_match(ranks_dic, match_list)
+            print("Round {}".format(round_number))
             self.show_tournament_match(match_list)
             sleep(5)
 
-            round_dic["{}".format(round_number)] = str(match_list)
+            round_dic["Round {}".format(round_number)] = str(match_list)
             self.update_player_score(player_list)
             self.show_players_status(player_list)
             sleep(3)
 
             print("Classement:")
-            self.player_ranking(player_list, ranks_dic)
+            self.player_ranking(player_list, ranks_dic, tournament_dic)
             sleep(5)
             match_list.clear()
 
         elif len(round_dic) > 0:
-            round_number = len(ranks_dic) + 1
+            round_number = len(round_dic) + 1
             self.tournament_match(ranks_dic, match_list)
+            print("Round {}".format(round_number))
             self.show_tournament_match(match_list)
             sleep(5)
 
-            round_dic["{}".format(round_number)] = str(match_list)
+            round_dic["Round {}".format(round_number)] = str(match_list)
             self.update_player_score(player_list)
             self.show_players_status(player_list)
             sleep(3)
@@ -92,7 +94,7 @@ class TournamentController(TournamentView, PlayerController):
         """Use to check informations about all tournaments"""
         for elt in tournament_list:
             index = tournament_list.index(elt)
-            print("{}.{}".format(index, elt))
+            print("{}.{}".format(index, elt['Nom']))
 
         tournament_choice = input("Choisissez le tournoi à consulter (Entrez son numéro)")
         tournament = tournament_list[int(tournament_choice)]
@@ -105,5 +107,7 @@ class TournamentController(TournamentView, PlayerController):
         choice = input()
         if choice == "1":
             print(tournament_dict['Joueurs'])
+            print(tournament_dict['Classement'])
+
         elif choice == "2":
             print(tournament_dict['Rounds'])

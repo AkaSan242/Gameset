@@ -4,16 +4,16 @@ from controllers.controller import Controller
 
 gameset_players = []
 gameset_tournament = []
+gameset_match_list = []
 tournament_players = []
 match_list = []
+tour_list = []
+tournament_match = []
 
-tournament_dic = {}
-round_dic = {}
-ranks_dic = {}
 
 game = Controller(gameset_players, gameset_tournament,
-                  tournament_players, tournament_dic,
-                  match_list, round_dic, ranks_dic)
+                  tournament_players, match_list,
+                  tour_list, tournament_match_list=tournament_match, gameset_match_list=gameset_match_list)
 
 print("BIENVENUE DANS GAMESET !")
 game.tournament_main_page()

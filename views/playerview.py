@@ -1,7 +1,5 @@
 """Base Player view."""
 
-import sys
-sys.path.append('../models')
 
 from models.tournament import Tournament
 

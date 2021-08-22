@@ -25,6 +25,8 @@ class Tournament:
                  name,
                  place,
                  time_control,
+                 tour_list=list,
+                 player_list=list,
                  date=date.today(),
                  player_numbers=NUMBER_OF_PLAYERS,
                  number_of_rounds=NUMBER_OF_ROUNDS,
@@ -38,5 +40,6 @@ class Tournament:
         self.number_of_rounds = number_of_rounds
         self.time_control = time_control
         self.description = description
-
+        self.tour_list = tour_list
+        self.player_list = player_list
 

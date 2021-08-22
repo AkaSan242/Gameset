@@ -1,8 +1,5 @@
 """Base Player controller"""
 
-import sys
-sys.path.append('../models')
-sys.path.append('../views')
 
 from time import sleep
 from models.player import Player
@@ -15,11 +12,25 @@ class PlayerController(PlayerView):
 
     def add_a_new_player(self, player_list):
         """Add a new player in the game"""
-        player_name = input("Quel est le prénom du joueur:")
-        player_last_name = input("Quel est le nom du Joueur:")
+        player_name = input("Prénom du joueur:")
+        while len(player_name) <= 0:
+            player_name = input("Prénom du joueur (Champ obligatoire):")
+
+        player_last_name = input("Nom du Joueur:")
+        while len(player_last_name) <= 0:
+            player_last_name = input("Nom du joueur (Champ obligatoire):")
+
         player_birth_date = input("Date de Naissance:")
-        player_gender = input("Sexe (Homme, Femme, Personnel):")
+        while len(player_birth_date) <= 0:
+            player_birth_date = input("Date de Naissance (Champ obligatoire):")
+
+        player_gender = input("Genre (Homme, Femme, Personnel):")
+        while len(player_gender) <= 0:
+            player_gender = input("Genre (Champ obligatoire):")
+
         player_rank = input("Classement:")
+        while len(player_rank) <= 0:
+            player_rank = input("Classement (Obligatoire):")
 
         player_list.append(Player(player_name,
                                   player_last_name,
@@ -93,6 +104,7 @@ class PlayerController(PlayerView):
         elif choice == "5":
             rank = input("Quel est le nouveau classement de {}:".format(player.name))
             player.rank = rank
+            print("Nouveau Classement confirmé: {}".format(player.rank))
 
     def update_player_score(self, player_list):
         """Add score for player after round"""

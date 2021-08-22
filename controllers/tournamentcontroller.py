@@ -1,39 +1,15 @@
 """Base Tournament Controller"""
 
-import sys
-sys.path.append("../models")
-sys.path.append('../views')
 
-from models.tournament import Tournament
+from operator import attrgetter
 from time import sleep
 from views.tournamentview import TournamentView
 from .playercontroller import PlayerController
+from .tourcontroller import TourController
 
 
-class TournamentController(TournamentView, PlayerController):
+class TournamentController(TournamentView, PlayerController, TourController):
     """Gameset Tournament Controller"""
-
-    def new_tournament(self, tournament_dic):
-        """Start a new tournament"""
-        name = input("Quel est le Nom du Tournoi:")
-        place = input("lieu du Tournoi:")
-        time_control = input("Controle du temps (Bullet, Blitz ou Coup Rapide):")
-
-        new_tournament = Tournament(name, place, time_control)
-        tournament_dic.update({"Nom": "{}".format(new_tournament.name),
-                               "Lieu": "{}".format(new_tournament.place),
-                               "Date": "{}".format(new_tournament.date),
-                               "Contrôle du temps": "{}".format(new_tournament.time_control),
-                               "Nombres de tours": "{}".format(new_tournament.NUMBER_OF_ROUNDS)})
-
-        print("Création du nouveau Tournoi '{}'".format(name))
-        TournamentView.show_tournament_informations(self,
-                                                    name,
-                                                    place,
-                                                    time_control,
-                                                    new_tournament.date,
-                                                    new_tournament.NUMBER_OF_PLAYERS,
-                                                    new_tournament.NUMBER_OF_ROUNDS)
 
     def choose_a_player(self, player_list, tournament_players_list):
         """Select a player for the tournament"""
@@ -47,62 +23,26 @@ class TournamentController(TournamentView, PlayerController):
         choose_player = input("Choisissez un joueur (entrez son numéro):")
         player = player_list[int(choose_player)]
         if player in tournament_players_list:
-            print("Ce joueur est déja pris")
+            print("{} est déja pris".format(player))
             sleep(2)
         else:
             print("Vous avez choisi:{}".format(player))
             sleep(2)
             tournament_players_list.append(player)
 
-    def tournament_round(self, player_list, ranks_dic, round_dic, match_list, tournament_dic):
-        """Define tournament round"""
-        if len(round_dic) == 0:
-            round_number = 1
-            self.first_match(ranks_dic, match_list)
-            print("Round {}".format(round_number))
-            self.show_tournament_match(match_list)
-            sleep(5)
-
-            round_dic["Round {}".format(round_number)] = str(match_list)
-            self.update_player_score(player_list)
-            self.show_players_status(player_list)
-            sleep(3)
-
-            print("Classement:")
-            self.player_ranking(player_list, ranks_dic, tournament_dic)
-            sleep(5)
-            match_list.clear()
-
-        elif len(round_dic) > 0:
-            round_number = len(round_dic) + 1
-            self.tournament_match(ranks_dic, match_list)
-            print("Round {}".format(round_number))
-            self.show_tournament_match(match_list)
-            sleep(5)
-
-            round_dic["Round {}".format(round_number)] = str(match_list)
-            self.update_player_score(player_list)
-            self.show_players_status(player_list)
-            sleep(3)
-
-            print("Classement:")
-            self.player_ranking(player_list, ranks_dic)
-            sleep(5)
-            match_list.clear()
-
     def check_tournament_list(self, tournament_list):
         """Use to check informations about all tournaments"""
         for elt in tournament_list:
             index = tournament_list.index(elt)
-            print("{}.{}".format(index, elt['Nom']))
+            print("{}.{}".format(index, elt.name))
 
-        tournament_choice = input("Choisissez le tournoi à consulter (Entrez son numéro)")
+        tournament_choice = input("Choisissez le tournoi à consulter (Entrez son numéro): ")
         tournament = tournament_list[int(tournament_choice)]
 
         self.tournament_list_main_page(tournament)
         self.choose_tournament_info(tournament)
 
-    def choose_tournament_info(self, tournament_dict):
+    def choose_tournament_info(self, tournament):
         """use to choose the informations to show"""
         choice = input()
         if choice == "1":
@@ -112,9 +52,21 @@ class TournamentController(TournamentView, PlayerController):
 
             list_by = input()
             if list_by == "1":
-                print(tournament_dict['Classement (par Nom)'])
+                name_ranking = sorted(tournament.player_list, key=attrgetter("name"))
+                print(name_ranking)
             elif list_by == "2":
-                print(tournament_dict['Classement (par Rang)'])
+                ranking = sorted(tournament.player_list, key=attrgetter("rank"))
+                print(ranking)
 
         elif choice == "2":
-            print(tournament_dict['Rounds'])
+            print("Vous voulez voir:")
+            print("1.Liste des Rounds")
+            print("2.Liste des matchs")
+
+            list_of = input()
+            if list_of == "1":
+                for elt in tournament.tour_list:
+                    print(elt)
+            elif list_of == "2":
+                for elt in tournament.tour_list:
+                    print(elt.show_match())

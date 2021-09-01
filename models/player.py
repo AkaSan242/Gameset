@@ -1,8 +1,6 @@
 """Define player model"""
 
 from tinydb import TinyDB, Query
-db = TinyDB('db.json')
-players_table = db.table('players')
 
 
 class Player:
@@ -23,22 +21,26 @@ class Player:
         self.gender = gender
         self.rank = rank
         self.score = int(score)
+        self.serialized_player = {
+            "name": self.name,
+            "last name": self.last_name,
+            "birth date": self.birth_date,
+            "gender": self.gender,
+            "rank": self.rank,
+        }
 
     def __str__(self):
         """Used in print"""
-        return f"'{self.name}'"
+        return f"{self.name}"
 
     def __repr__(self):
         """Used in print"""
-        return f"'{self.name} {self.last_name}'"
+        return f"{self.name} {self.last_name}"
 
-    def serialise_player(self):
-        serialized_player = {
-            'name': self.name,
-            'last name': self.last_name,
-            'birth date': self.birth_date,
-            'gender': self.gender,
-            'rank': self.rank
-        }
+    def save_player(self):
+        """Use to record a player in the database"""
+        db = TinyDB("db.json")
+        player_table = db.table("players")
+        player_table.insert(self.serialized_player)
 
-        players_table.insert(serialized_player)
+

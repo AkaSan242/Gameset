@@ -1,8 +1,9 @@
 """Base tour view"""
 
-
+from operator import attrgetter
 from time import sleep, strftime
 from models.tour import Tour
+from models.tournament import Tournament
 from .tournamentview import *
 from .playerview import *
 from controllers.tourcontroller import *
@@ -10,7 +11,7 @@ from controllers.playercontroller import *
 
 
 def tournament_round(
-        tournamment, player_list, match_list, tour_list, tournament_match, match_list_tuple
+        tournament, player_list, match_list, tour_list, tournament_match, match_list_tuple
     ):
     """Define tournament round"""
     if len(tour_list) == 0:
@@ -34,7 +35,7 @@ def tournament_round(
         end = strftime("%Y %m %d %H:%M")
         tour.ending_time = end
         tour_list.append(tour)
-        tournamment.tour_list.append(tour)
+        tournament.tour_list.append(tour)
         serialized_tour = {
             "name": tour.name,
             "match list": tour.match_list,
@@ -42,8 +43,6 @@ def tournament_round(
             "end": tour.ending_time,
 
         }
-        tournamment.serialized_tour.append(serialized_tour)
-        print(tournamment.serialized_tour)
 
         show_players_status(player_list)
         sleep(2)
@@ -53,6 +52,18 @@ def tournament_round(
         sleep(1)
         match_list.clear()
         match_list_tuple.clear()
+
+        new_ranking = sorted(player_list, key=attrgetter("score"), reverse=True)
+        for i in range(len(new_ranking)):
+            serialized_player = {
+                "name": new_ranking[i].name,
+                "last name": new_ranking[i].last_name,
+                "birth date": new_ranking[i].birth_date,
+                "gender": new_ranking[i].gender,
+                "rank":new_ranking[i].rank,
+                "score": new_ranking[i].score
+            }
+            tournament.serialized_tournament['player {}'.format(i + 1)] = serialized_player
 
     elif len(tour_list) > 0:
         round_number = len(tour_list) + 1
@@ -83,7 +94,7 @@ def tournament_round(
             "end": tour.ending_time,
 
         }
-        tournamment.serialized_tour.append(serialized_tour)
+        tournament.serialized_tournament['{}'.format(round_name)] = serialized_tour
 
         show_players_status(player_list)
         sleep(2)
@@ -93,3 +104,15 @@ def tournament_round(
         sleep(1)
         match_list.clear()
         match_list_tuple.clear()
+
+        new_ranking = sorted(player_list, key=attrgetter("score"), reverse=True)
+        for i in range(len(new_ranking)):
+            serialized_player = {
+                "name": new_ranking[i].name,
+                "last name": new_ranking[i].last_name,
+                "birth date": new_ranking[i].birth_date,
+                "gender": new_ranking[i].gender,
+                "rank": new_ranking[i].rank,
+                "score": new_ranking[i].score
+            }
+            tournament.serialized_tournament['player {}'.format(i + 1)] = serialized_player

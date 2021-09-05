@@ -51,13 +51,11 @@ class Controller:
         serialized_tournament = tournament_table.all()
         for i in range(len(serialized_tournament)):
             name = serialized_tournament[i]["name"]
-            place = serialized_tournament[i]["Place"]
+            place = serialized_tournament[i]["place"]
             date = serialized_tournament[i]["date"]
             new_date = datetime.datetime.fromtimestamp(int(date))
-            number_of_players = serialized_tournament[i]["player number"]
-            player_list = list(serialized_tournament[i]["player list"])
+            number_of_players = serialized_tournament[i]["number of players"]
             number_of_rounds = serialized_tournament[i]["number of rounds"]
-            round_list = serialized_tournament[i]["round list"]
             time_control = serialized_tournament[i]["time controle"]
             description = serialized_tournament[i]["description"]
 
@@ -65,16 +63,41 @@ class Controller:
                 name,
                 place,
                 time_control,
-                round_list,
-                player_list,
-                new_date,
-                number_of_players,
-                number_of_rounds,
-                description,
-                serialized_player_list=[],
-                serialized_tour_list=[],
+                tour_list=[],
+                player_list=[],
+                date=new_date,
+                player_numbers=number_of_players,
+                number_of_rounds=number_of_rounds,
+                description=description
 
             )
+            for l in range(number_of_players):
+                player_name = serialized_tournament[i]["player {}".format(l + 1)]["name"]
+                player_last_name = serialized_tournament[i]["player {}".format(l + 1)]["last name"]
+                player_birth_date = serialized_tournament[i]["player {}".format(l + 1)]["birth date"]
+                player_gender = serialized_tournament[i]["player {}".format(l + 1)]["gender"]
+                player_rank = serialized_tournament[i]["player {}".format(l + 1)]["rank"]
+                player_score = serialized_tournament[i]["player {}".format(l + 1)]["score"]
+
+                player = Player(player_name,
+                                player_last_name,
+                                player_birth_date,
+                                player_gender,
+                                player_rank,
+                                player_score)
+                json_tournament.player_list.append(player)
+
+            for h in range(number_of_rounds):
+                round_name = serialized_tournament[i]["Round {}".format(h + 1)]["name"]
+                round_match = serialized_tournament[i]["Round {}".format(h + 1)]["match list"]
+                round_start = serialized_tournament[i]["Round {}".format(h + 1)]["start"]
+                round_end = serialized_tournament[i]["Round {}".format(h + 1)]["end"]
+
+                round = Tour(match_list=round_match,
+                             name=round_name,
+                             beginning_time=round_start,
+                             ending_time=round_end)
+                json_tournament.tour_list.append(round)
 
             self.tournament_list.append(json_tournament)
 
@@ -217,6 +240,11 @@ class Controller:
                 new_tournament.serialized_tournament['time controle'] = new_tournament.time_control
                 new_tournament.serialized_tournament['number of players'] = new_tournament.NUMBER_OF_PLAYERS
                 new_tournament.serialized_tournament['number of rounds'] = new_tournament.NUMBER_OF_ROUNDS
+                for i in range(new_tournament.NUMBER_OF_ROUNDS):
+                    new_tournament.serialized_tournament["Round {}".format(i + 1)] = {"name": "",
+                                                                                      "match list": "",
+                                                                                      "start": "",
+                                                                                      "end": ""}
 
                 for elt in self.tournament_player_list:
                     new_tournament.player_list.append(elt)
@@ -293,15 +321,12 @@ class Controller:
                         tournament,
                         tournament.player_list,
                         self.match_list,
-                        self.tour_list,
+                        tournament.tour_list,
                         self.tournament_match,
                         self.match_list_tuple,
                     )
                     self.continuer(tournament)
                     self.change_ranking()
-
-                for elt in self.tour_list:
-                    tournament.tour_list.append(elt)
 
                 ranking = sorted(tournament.player_list, key=attrgetter("rank"))
                 print("Le vainqueur du tournoi est {}".format(ranking[0]))
@@ -311,6 +336,7 @@ class Controller:
                     )
                 )
                 tournament.description = resume
+                tournament.serialized_tournament['description'] = tournament.description
                 tournament.save_tournament()
 
                 self.tournament_list.append(tournament)

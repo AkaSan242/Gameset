@@ -211,18 +211,25 @@ class Controller:
                     new_tournament.NUMBER_OF_PLAYERS,
                     new_tournament.NUMBER_OF_ROUNDS,
                 )
+                new_tournament.serialized_tournament['name'] = new_tournament.name
+                new_tournament.serialized_tournament['place'] = new_tournament.place
+                new_tournament.serialized_tournament['date'] = new_tournament.date
+                new_tournament.serialized_tournament['time controle'] = new_tournament.time_control
+                new_tournament.serialized_tournament['number of players'] = new_tournament.NUMBER_OF_PLAYERS
+                new_tournament.serialized_tournament['number of rounds'] = new_tournament.NUMBER_OF_ROUNDS
 
                 for elt in self.tournament_player_list:
                     new_tournament.player_list.append(elt)
-                for player in new_tournament.player_list:
+                for i in range(len(new_tournament.player_list)):
                     serialized_player = {
-                        "name": player.name,
-                        "last name": player.last_name,
-                        "birth date": player.birth_date,
-                        "gender": player.gender,
-                        "rank": player.rank,
+                        "name": new_tournament.player_list[i].name,
+                        "last name": new_tournament.player_list[i].last_name,
+                        "birth date": new_tournament.player_list[i].birth_date,
+                        "gender": new_tournament.player_list[i].gender,
+                        "rank": new_tournament.player_list[i].rank,
+                        "score": new_tournament.player_list[i].score
                     }
-                    new_tournament.serialized_player.append(serialized_player)
+                    new_tournament.serialized_tournament['player {}'.format(i + 1)] = serialized_player
 
                 print("Nous allons commencer le tirage au sort...")
                 sleep(2)
@@ -249,6 +256,7 @@ class Controller:
                 )
                 new_tournament.description = resume
                 self.tournament_list.append(new_tournament)
+                new_tournament.serialized_tournament['description'] = new_tournament.description
                 new_tournament.save_tournament()
 
                 for elt in self.tournament_player_list:

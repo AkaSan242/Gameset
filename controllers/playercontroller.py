@@ -29,7 +29,9 @@ def add_a_new_player(player_list):
     while len(player_rank) <= 0:
         player_rank = input("Classement (Obligatoire):")
 
-    player = Player(player_name, player_last_name, player_birth_date, player_gender, player_rank )
+    player = Player(
+        player_name, player_last_name, player_birth_date, player_gender, player_rank
+    )
     player_list.append(player)
     player.save_player()
 
@@ -62,9 +64,7 @@ def update_delete_player(player_list):
         for i in range(len(player_list)):
             print("{}.{}".format(i, player_list[i]))
 
-        choose_player = input(
-            "Choisissez le joueur à modifier (entrez son numéro):"
-        )
+        choose_player = input("Choisissez le joueur à modifier (entrez son numéro):")
         player = player_list[int(choose_player)]
 
         update_player_page()
@@ -74,9 +74,7 @@ def update_delete_player(player_list):
         for i in range(len(player_list)):
             print("{}.{}".format(i, player_list[i]))
 
-        choose_player = input(
-            "Choisissez le joueur à Supprimer (entrez son numéro):"
-        )
+        choose_player = input("Choisissez le joueur à Supprimer (entrez son numéro):")
         del player_list[int(choose_player)]
         print("Joueur supprimer")
 

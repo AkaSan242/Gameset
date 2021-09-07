@@ -33,9 +33,7 @@ def check_tournament_list(tournament_list):
         index = tournament_list.index(elt)
         print("{}.{}".format(index, elt.name))
 
-    tournament_choice = input(
-        "Choisissez le tournoi à consulter (Entrez son numéro): "
-    )
+    tournament_choice = input("Choisissez le tournoi à consulter (Entrez son numéro): ")
     tournament = tournament_list[int(tournament_choice)]
 
     tournament_list_main_page(tournament)

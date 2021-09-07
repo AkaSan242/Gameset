@@ -6,14 +6,10 @@ from models.tournament import Tournament
 
 def show_players(player_list):
     """Present all players of tournament"""
-    print(
-        "Voici les {} participants du Tournoi:".format(Tournament.NUMBER_OF_PLAYERS)
-    )
+    print("Voici les {} participants du Tournoi:".format(Tournament.NUMBER_OF_PLAYERS))
     for players in player_list:
         print(
-            "{} Classement:'{}' Score:'{}'".format(
-                players, players.rank, players.score
-            )
+            "{} Classement:'{}' Score:'{}'".format(players, players.rank, players.score)
         )
 
 
@@ -24,8 +20,8 @@ def show_list_players(player_list):
         print(
             "Prénom: {} Nom: {} Classement: {}".format(
                 players.name, players.last_name, players.rank
-                )
             )
+        )
     if len(player_list) == 0:
         print("Il n'y a aucun joueurs disponible")
 

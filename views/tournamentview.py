@@ -22,8 +22,8 @@ def player_ranking(player_list):
 
 
 def show_tournament_informations(
-        name, place, time_control, date, player_numbers, number_of_rounds
-    ):
+    name, place, time_control, date, player_numbers, number_of_rounds
+):
     """Show tournament information"""
     print(
         "Tournoi:'{}' Lieu:'{}' Date:'{}' Participants:'{}' Rounds:'{}' Contrôle du temps:'{}' ".format(
@@ -58,8 +58,8 @@ def tournament_list_main_page(tournament):
             tournament.place,
             tournament.time_control,
             tournament.description,
-            )
         )
+    )
 
     print("1.Liste des Participants")
     print("2.Listes des Rounds et Matchs")

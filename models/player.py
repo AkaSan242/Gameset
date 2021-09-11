@@ -21,13 +21,6 @@ class Player:
         self.gender = gender
         self.rank = rank
         self.score = int(score)
-        self.serialized_player = {
-            "name": self.name,
-            "last name": self.last_name,
-            "birth date": self.birth_date,
-            "gender": self.gender,
-            "rank": self.rank,
-        }
 
     def __str__(self):
         """Used in print"""
@@ -37,10 +30,18 @@ class Player:
         """Used in print"""
         return f"{self.name} {self.last_name}"
 
+    def serialized_player(self):
+        return {
+            "name": self.name,
+            "last name": self.last_name,
+            "birth date": self.birth_date,
+            "gender": self.gender,
+            "rank": self.rank,
+            "score": self.score,
+        }
+
     def save_player(self):
         """Use to record a player in the database"""
         db = TinyDB("db.json")
         player_table = db.table("players")
-        player_table.insert(self.serialized_player)
-
-
+        player_table.insert(self.serialized_player())

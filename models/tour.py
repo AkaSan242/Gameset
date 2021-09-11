@@ -1,4 +1,5 @@
 """Define a tour/round model"""
+import datetime
 
 
 class Tour:
@@ -9,7 +10,7 @@ class Tour:
      -the date/time of the beginning and the end
     """
 
-    def __init__(self, match_list=list, name="", beginning_time="", ending_time=""):
+    def __init__(self, match_list, name, beginning_time="", ending_time=""):
         """Tour model"""
         self.match_list = match_list
         self.name = name
@@ -20,12 +21,13 @@ class Tour:
         """Use in print"""
         return f"{self.name} Matchs:{self.match_list} Début:{self.beginning_time} Fin:{self.ending_time}"
 
+    def serialized_tour(self):
+        return {
+            "name": self.name,
+            "match list": str(self.match_list),
+            "start": self.beginning_time,
+            "end": self.ending_time,
+        }
+
     def show_match(self):
         return self.match_list
-
-
-
-
-
-
-

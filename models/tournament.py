@@ -1,6 +1,6 @@
 """define tournament model"""
 
-import datetime
+from time import strftime
 from tinydb import TinyDB, Query
 from operator import attrgetter
 from .player import Player
@@ -32,7 +32,7 @@ class Tournament:
         time_control,
         tour_list,
         player_list,
-        date=datetime.date.today(),
+        date=strftime("%Y %m %d %H:%M"),
         player_numbers=NUMBER_OF_PLAYERS,
         number_of_rounds=NUMBER_OF_ROUNDS,
         description="",
@@ -47,8 +47,6 @@ class Tournament:
         self.description = description
         self.tour_list = tour_list
         self.player_list = player_list
-        self.serialized_player = []
-        self.serialized_tour = []
 
     def __str__(self):
         """used in print"""
@@ -57,29 +55,21 @@ class Tournament:
             f"Nombre de rounds:{self.number_of_rounds}, Contrôle du temmps:{self.time_control}"
         )
 
+    def serialized_tournament(self):
+        return {
+            "name": self.name,
+            "place": self.place,
+            "date": self.date,
+            "number of players": self.player_numbers,
+            "number of rounds": self.number_of_rounds,
+            "time control": self.time_control,
+            "description": self.description,
+            "tour list": [tour.serialized_tour() for tour in self.tour_list],
+            "player list": [player.serialized_player() for player in self.player_list],
+        }
+
     def save_tournament(self):
         """Use to record the tournament in the database"""
         db = TinyDB("db.json")
         tournament_table = db.table("tournament")
-        now = datetime.datetime.now()
-        self.date = datetime.datetime.timestamp(now)
-
-        serialized_tournament = {
-            "name": self.name,
-            "Place": self.place,
-            "date": self.date,
-            "player number": self.player_numbers,
-            "time controle": self.time_control,
-            "number of rounds": self.number_of_rounds,
-            "player 1": self.serialized_player[0],
-            "player 2": self.serialized_player[1],
-            "player 3": self.serialized_player[2],
-            "player 4": self.serialized_player[3],
-            "player 5": self.serialized_player[4],
-            "player 6": self.serialized_player[5],
-            "player 7": self.serialized_player[6],
-            "player 8": self.serialized_player[7],
-            "description": self.description,
-        }
-
-        tournament_table.insert(serialized_tournament)
+        tournament_table.insert(self.serialized_tournament())

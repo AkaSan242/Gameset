@@ -1,12 +1,9 @@
 """Base Player view."""
 
 
-from models.tournament import Tournament
-
-
 def show_players(player_list):
     """Present all players of tournament"""
-    print("Voici les {} participants du Tournoi:".format(Tournament.NUMBER_OF_PLAYERS))
+    print("Voici les {} participants du Tournoi:".format(len(player_list)))
     for players in player_list:
         print(
             "{} Classement:'{}' Score:'{}'".format(players, players.rank, players.score)

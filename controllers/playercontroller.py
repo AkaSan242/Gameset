@@ -4,7 +4,11 @@
 from time import sleep
 from operator import attrgetter
 from models.player import Player
-from views.playerview import *
+from views.playerview import (
+    show_player,
+    update_delete_player_main_page,
+    update_player_page,
+)
 
 
 def add_a_new_player(player_list):

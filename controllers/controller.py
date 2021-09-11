@@ -1,13 +1,14 @@
 """Define the main controller"""
-import datetime
+
 import sys
 from operator import attrgetter
-from tinydb import TinyDB, Query
+from tinydb import TinyDB
 from time import sleep
 
 # Controllers
 from .tournamentcontroller import *
 from .playercontroller import *
+from .tourcontroller import tournament_round
 
 # Models
 from models.tournament import Tournament
@@ -15,9 +16,13 @@ from models.player import Player
 from models.tour import Tour
 
 # Views
-from views.playerview import *
-from views.tournamentview import *
-from views.tourview import *
+from views.playerview import show_players
+from views.tournamentview import (
+    start_continue_tournament,
+    rank_player,
+    tournament_main_page,
+    show_tournament_informations,
+)
 
 db = TinyDB("db.json")
 players_table = db.table("players")
@@ -53,11 +58,12 @@ class Controller:
             name = serialized_tournament[i]["name"]
             place = serialized_tournament[i]["place"]
             date = serialized_tournament[i]["date"]
-            new_date = datetime.datetime.fromtimestamp(int(date))
             number_of_players = serialized_tournament[i]["number of players"]
             number_of_rounds = serialized_tournament[i]["number of rounds"]
-            time_control = serialized_tournament[i]["time controle"]
+            time_control = serialized_tournament[i]["time control"]
             description = serialized_tournament[i]["description"]
+            tour_list = serialized_tournament[i]["tour list"]
+            player_list = serialized_tournament[i]["player list"]
 
             json_tournament = Tournament(
                 name,
@@ -65,58 +71,29 @@ class Controller:
                 time_control,
                 tour_list=[],
                 player_list=[],
-                date=new_date,
+                date=date,
                 player_numbers=number_of_players,
                 number_of_rounds=number_of_rounds,
                 description=description,
             )
-            for l in range(number_of_players):
-                player_name = serialized_tournament[i]["player {}".format(l + 1)][
-                    "name"
-                ]
-                player_last_name = serialized_tournament[i]["player {}".format(l + 1)][
-                    "last name"
-                ]
-                player_birth_date = serialized_tournament[i]["player {}".format(l + 1)][
-                    "birth date"
-                ]
-                player_gender = serialized_tournament[i]["player {}".format(l + 1)][
-                    "gender"
-                ]
-                player_rank = serialized_tournament[i]["player {}".format(l + 1)][
-                    "rank"
-                ]
-                player_score = serialized_tournament[i]["player {}".format(l + 1)][
-                    "score"
-                ]
 
-                player = Player(
-                    player_name,
-                    player_last_name,
-                    player_birth_date,
-                    player_gender,
-                    player_rank,
-                    player_score,
-                )
+            for t in range(len(tour_list)):
+                name = tour_list[t]["name"]
+                match_list = tour_list[t]["match list"]
+                start = tour_list[t]["start"]
+                end = tour_list[t]["end"]
+                tour = Tour(match_list, name, start, end)
+                json_tournament.tour_list.append(tour)
+
+            for p in range(len(player_list)):
+                name = player_list[p]["name"]
+                last_name = player_list[p]["last name"]
+                birth_date = player_list[p]["birth date"]
+                gender = player_list[p]["gender"]
+                rank = player_list[p]["rank"]
+                score = player_list[p]["score"]
+                player = Player(name, last_name, birth_date, gender, rank, score)
                 json_tournament.player_list.append(player)
-
-            for h in range(number_of_rounds):
-                round_name = serialized_tournament[i]["Round {}".format(h + 1)]["name"]
-                round_match = serialized_tournament[i]["Round {}".format(h + 1)][
-                    "match list"
-                ]
-                round_start = serialized_tournament[i]["Round {}".format(h + 1)][
-                    "start"
-                ]
-                round_end = serialized_tournament[i]["Round {}".format(h + 1)]["end"]
-
-                round = Tour(
-                    match_list=round_match,
-                    name=round_name,
-                    beginning_time=round_start,
-                    ending_time=round_end,
-                )
-                json_tournament.tour_list.append(round)
 
             self.tournament_list.append(json_tournament)
 
@@ -253,126 +230,80 @@ class Controller:
                     new_tournament.NUMBER_OF_PLAYERS,
                     new_tournament.NUMBER_OF_ROUNDS,
                 )
-                new_tournament.serialized_tournament["name"] = new_tournament.name
-                new_tournament.serialized_tournament["place"] = new_tournament.place
-                new_tournament.serialized_tournament["date"] = new_tournament.date
-                new_tournament.serialized_tournament[
-                    "time controle"
-                ] = new_tournament.time_control
-                new_tournament.serialized_tournament[
-                    "number of players"
-                ] = new_tournament.NUMBER_OF_PLAYERS
-                new_tournament.serialized_tournament[
-                    "number of rounds"
-                ] = new_tournament.NUMBER_OF_ROUNDS
-                for i in range(new_tournament.NUMBER_OF_ROUNDS):
-                    new_tournament.serialized_tournament["Round {}".format(i + 1)] = {
-                        "name": "",
-                        "match list": "",
-                        "start": "",
-                        "end": "",
-                    }
 
                 for elt in self.tournament_player_list:
                     new_tournament.player_list.append(elt)
-                for i in range(len(new_tournament.player_list)):
-                    serialized_player = {
-                        "name": new_tournament.player_list[i].name,
-                        "last name": new_tournament.player_list[i].last_name,
-                        "birth date": new_tournament.player_list[i].birth_date,
-                        "gender": new_tournament.player_list[i].gender,
-                        "rank": new_tournament.player_list[i].rank,
-                        "score": new_tournament.player_list[i].score,
-                    }
-                    new_tournament.serialized_tournament[
-                        "player {}".format(i + 1)
-                    ] = serialized_player
+                self.tournament_player_list.clear()
 
                 print("Nous allons commencer le tirage au sort...")
                 sleep(2)
 
-                rank_player(self.tournament_player_list)
+                rank_player(new_tournament.player_list)
                 for i in range(new_tournament.NUMBER_OF_ROUNDS):
                     tournament_round(
                         new_tournament,
-                        self.tournament_player_list,
+                        new_tournament.player_list,
                         self.match_list,
-                        self.tour_list,
                         self.tournament_match,
                         self.match_list_tuple,
                     )
                     self.continuer(new_tournament)
                     self.change_ranking()
 
-                ranking = sorted(self.tournament_player_list, key=attrgetter("rank"))
+                ranking = sorted(new_tournament.player_list, key=attrgetter("rank"))
                 print("Le vainqueur du tournoi est {}".format(ranking[0]))
-                resume = input(
-                    "Quelles sont vos remarques sur ce Tournoi {}: ".format(
-                        new_tournament.name
-                    )
-                )
+                resume = input("Quelles sont vos remarques sur ce Tournoi: ")
                 new_tournament.description = resume
                 self.tournament_list.append(new_tournament)
-                new_tournament.serialized_tournament[
-                    "description"
-                ] = new_tournament.description
                 new_tournament.save_tournament()
 
-                for elt in self.tournament_player_list:
-                    elt.score = 0
-
-                self.tournament_player_list.clear()
                 self.tournament_match.clear()
-                self.tour_list.clear()
                 self.back_to_main_page()
 
         elif tournament_choice == "2":
-            if len(self.tournament_list) == 0:
-                print("Il n'y a pas de Tournoi enregister")
-                self.back_to_main_page()
-            else:
-                for tournament in self.tournament_list:
-                    index = self.tournament_list.index(tournament)
-                    if len(tournament.tour_list) < Tournament.NUMBER_OF_ROUNDS:
-                        print("{}.{}".format(index, tournament.name))
+            self.choose_three_continue()
 
-                choose_tournament = input(
-                    "Quel tournoi voulez-vous continuer ? (entrez son numéro):"
+    def choose_three_continue(self):
+        if len(self.tournament_list) == 0:
+            print("Il n'y a pas de Tournoi enregister")
+            self.back_to_main_page()
+        else:
+            for tournament in self.tournament_list:
+                index = self.tournament_list.index(tournament)
+                if len(tournament.tour_list) < Tournament.NUMBER_OF_ROUNDS:
+                    print(index, tournament.name)
+
+            choose_tournament = input(
+                "Quel tournoi voulez-vous continuer ? (entrez son numéro):"
+            )
+            tournament = self.tournament_list[int(choose_tournament)]
+            print(
+                "Nous reprenons le tournoi {} à partir du round {}".format(
+                    tournament.name, len(tournament.tour_list) + 1
                 )
-                tournament = self.tournament_list[int(choose_tournament)]
-                print(
-                    "Nous reprenons le tournoi {} à partir du round {}".format(
-                        tournament.name, len(tournament.tour_list) + 1
-                    )
+            )
+
+            rank_player(tournament.player_list)
+            for i in range(tournament.NUMBER_OF_ROUNDS - len(tournament.tour_list)):
+                tournament_round(
+                    tournament,
+                    tournament.player_list,
+                    self.match_list,
+                    self.tournament_match,
+                    self.match_list_tuple,
                 )
+                self.continuer(tournament)
+                self.change_ranking()
 
-                rank_player(tournament.player_list)
-                for i in range(tournament.NUMBER_OF_ROUNDS - len(tournament.tour_list)):
-                    tournament_round(
-                        tournament,
-                        tournament.player_list,
-                        self.match_list,
-                        tournament.tour_list,
-                        self.tournament_match,
-                        self.match_list_tuple,
-                    )
-                    self.continuer(tournament)
-                    self.change_ranking()
+            ranking = sorted(tournament.player_list, key=attrgetter("rank"))
+            print("Le vainqueur du tournoi est {}".format(ranking[0]))
+            resume = input("Quelles sont vos remarques sur ce Tournoi: ")
+            tournament.description = resume
+            tournament.save_tournament()
 
-                ranking = sorted(tournament.player_list, key=attrgetter("rank"))
-                print("Le vainqueur du tournoi est {}".format(ranking[0]))
-                resume = input(
-                    "Quelles sont vos remarques sur ce Tournoi {}: ".format(
-                        tournament.name
-                    )
-                )
-                tournament.description = resume
-                tournament.serialized_tournament["description"] = tournament.description
-                tournament.save_tournament()
-
-                self.tournament_list.append(tournament)
-                self.tournament_match.clear()
-                self.back_to_main_page()
+            self.tournament_list.append(tournament)
+            self.tournament_match.clear()
+            self.back_to_main_page()
 
     def choose_four(self):
         # Liste des Tournois

@@ -1,10 +1,7 @@
 """define tournament model"""
 
 from time import strftime
-from tinydb import TinyDB, Query
-from operator import attrgetter
-from .player import Player
-from .tour import Tour
+from tinydb import TinyDB
 
 
 class Tournament:

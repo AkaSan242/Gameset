@@ -1,6 +1,6 @@
 """Define player model"""
 
-from tinydb import TinyDB, Query
+from tinydb import TinyDB
 
 
 class Player:

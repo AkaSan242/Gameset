@@ -1,5 +1,4 @@
 """Define a tour/round model"""
-import datetime
 
 
 class Tour:

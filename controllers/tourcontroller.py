@@ -16,16 +16,18 @@ def first_match(player_list, match_list, tournament_match, match_list_tuple):
     -Player 3 VS 7
     -Player 4 VS 8
 
-    -All match are 'Tuples' we create a tuple of a match between two players and add it in the match list.
+    -All match are 'Tuples',
+     we create a tuple of match between two players and add it in match list.
 
     -Once all matchs are define we add them on the tournament match list.
 
-    -'Tuples' are unique so for all matchs in match list we create a reverse 'Tuple' version of the match and add it in
-    the tournament match list we'll use to check if there is a match 'A vs B' in the list,
-    we can't have a match 'A vs B' or 'B vs A' on the next rounds because two players can't play together twice.
+    -'Tuples' are unique.
 
-    -match list tuple is the list of the final version of each match use to save the tuple of the two players
-    name and score
+     for all matchs in match list we create a reverse 'Tuple' of the match,
+    add it in the tournament match list.
+
+    we'll use to check if there is a match 'A vs B' in the list,
+    we can't have a match 'A vs B' or 'B vs A'.
     """
 
     new_ranking = sorted(player_list, key=attrgetter("rank"))
@@ -100,7 +102,11 @@ def match_set(player_list, match_list, tournament_match, match_list_tuple):
             player_list, key=attrgetter("rank"), reverse=not inverse % 2
         )
         generated_match = algo(
-            j, new_ranking, len(player_list), tournament_match, match_list_tuple
+            j,
+            new_ranking,
+            len(player_list),
+            tournament_match,
+            match_list_tuple
         )
         if inverse % 2:
             j += 1
@@ -109,10 +115,15 @@ def match_set(player_list, match_list, tournament_match, match_list_tuple):
         match_list.append(elt)
 
 
-def algo(j, new_ranking, number_of_players, tournament_match, match_list_tuple):
+def algo(j,
+         new_ranking,
+         number_of_players,
+         tournament_match,
+         match_list_tuple):
     """Algo function is use to check all the match and redefine them if needed.
     for example:
-    if player 1 and 2 have already played together then we try with player 3, 4 etc
+    if player 1 and 2 have already played together,
+     then we try with player 3, 4 etc
      until we find a match never played in the tournament"""
 
     generated_match = []
@@ -154,7 +165,10 @@ def tournament_round(
         round_number = 1
         round_name = "Round {}".format(round_number)
 
-        first_match(player_list, match_list, tournament_match, match_list_tuple)
+        first_match(player_list,
+                    match_list,
+                    tournament_match,
+                    match_list_tuple)
         print(round_name)
         tour = Tour(match_list=[], name=round_name)
         for i in range(len(match_list_tuple)):

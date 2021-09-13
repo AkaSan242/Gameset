@@ -6,7 +6,10 @@ def show_players(player_list):
     print("Voici les {} participants du Tournoi:".format(len(player_list)))
     for players in player_list:
         print(
-            "{} Classement:'{}' Score:'{}'".format(players, players.rank, players.score)
+            "{} Classement:'{}' Score:'{}'".format(
+                players,
+                players.rank,
+                players.score)
         )
 
 
@@ -26,7 +29,7 @@ def show_list_players(player_list):
 def show_player(name, last_name, birth_date, gender, rank):
     """Show player informations"""
     print(
-        "Prénom:'{}' Nom:'{}' Date de naissance:'{}' Genre:'{}' Classement: '{}'".format(
+        "'{}' '{}' Date de naissance:'{}' Genre:'{}' Classement:'{}'".format(
             name, last_name, birth_date, gender, rank
         )
     )

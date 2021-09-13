@@ -18,7 +18,10 @@ class Tour:
 
     def __repr__(self):
         """Use in print"""
-        return f"{self.name} Matchs:{self.match_list} Début:{self.beginning_time} Fin:{self.ending_time}"
+        return f"{self.name}" \
+               f" Matchs:{self.match_list}" \
+               f" Début:{self.beginning_time}" \
+               f" Fin:{self.ending_time}"
 
     def serialized_tour(self):
         return {

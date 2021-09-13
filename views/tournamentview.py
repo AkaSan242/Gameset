@@ -26,8 +26,18 @@ def show_tournament_informations(
 ):
     """Show tournament information"""
     print(
-        "Tournoi:'{}' Lieu:'{}' Date:'{}' Participants:'{}' Rounds:'{}' Contrôle du temps:'{}' ".format(
-            name, place, date, player_numbers, number_of_rounds, time_control
+        "Tournoi:'{}'"
+        " Lieu:'{}'"
+        " Date:'{}'"
+        " Participants:'{}'"
+        " Rounds:'{}'"
+        " Contrôle du temps:'{}' ".format(
+            name,
+            place,
+            date,
+            player_numbers,
+            number_of_rounds,
+            time_control
         )
     )
 
@@ -52,7 +62,7 @@ def tournament_main_page():
 def tournament_list_main_page(tournament):
     """Print Tournament list Main menu"""
     print(
-        "Tournoi:'{}' Date:'{}' Lieu:'{}' Contrôle du Temps:'{}' Remarques:'{}'".format(
+        "Tournoi:'{}' Date:'{}' Lieu:'{}' Temps:'{}' Remarques:'{}'".format(
             tournament.name,
             tournament.date,
             tournament.place,

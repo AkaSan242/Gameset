@@ -33,7 +33,9 @@ def check_tournament_list(tournament_list):
         index = tournament_list.index(elt)
         print("{}.{}".format(index, elt.name))
 
-    tournament_choice = input("Choisissez le Tournoi à consulter (Entrez son numéro): ")
+    tournament_choice = input(
+        "Choisissez le Tournoi à consulter (Entrez son numéro):"
+    )
     tournament = tournament_list[int(tournament_choice)]
 
     tournament_list_main_page(tournament)
@@ -50,13 +52,15 @@ def choose_tournament_info(tournament):
 
         list_by = input()
         if list_by == "1":
-            name_ranking = sorted(tournament.player_list, key=attrgetter("name"))
+            name_ranking = sorted(tournament.player_list,
+                                  key=attrgetter("name"))
             for elt in name_ranking:
                 print(elt, elt.last_name)
             sleep(2)
 
         elif list_by == "2":
-            ranking = sorted(tournament.player_list, key=attrgetter("rank"))
+            ranking = sorted(tournament.player_list,
+                             key=attrgetter("rank"))
             i = 1
             for elt in ranking:
                 print("{}  Classement:{}  Score:{}".format(elt, i, elt.score))

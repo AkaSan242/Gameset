@@ -48,8 +48,10 @@ class Tournament:
     def __str__(self):
         """used in print"""
         return (
-            f"Nom:{self.name} Lieu:{self.place} Date:{self.date} Participants:{self.player_list}"
-            f"Nombre de rounds:{self.number_of_rounds}, Contrôle du temmps:{self.time_control}"
+            f"Nom:{self.name} Lieu:{self.place} Date:{self.date}"
+            f" Participants:{self.player_list}"
+            f"Nombre de rounds:{self.number_of_rounds},"
+            f" Contrôle du temmps:{self.time_control}"
         )
 
     def serialized_tournament(self):
@@ -61,8 +63,10 @@ class Tournament:
             "number of rounds": self.number_of_rounds,
             "time control": self.time_control,
             "description": self.description,
-            "tour list": [tour.serialized_tour() for tour in self.tour_list],
-            "player list": [player.serialized_player() for player in self.player_list],
+            "tour list":
+                [tour.serialized_tour() for tour in self.tour_list],
+            "player list":
+                [player.serialized_player() for player in self.player_list],
         }
 
     def save_tournament(self):

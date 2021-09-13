@@ -6,8 +6,15 @@ from tinydb import TinyDB
 from time import sleep
 
 # Controllers
-from .tournamentcontroller import *
-from .playercontroller import *
+from .tournamentcontroller import choose_a_player, check_tournament_list
+from .playercontroller import (
+    add_a_new_player,
+    search_player_by_name,
+    search_player_by_rank,
+    update_delete_player,
+    update_player_rank,
+
+)
 from .tourcontroller import tournament_round
 
 # Models
@@ -50,7 +57,11 @@ class Controller:
             birth_date = serialized_players[i]["birth date"]
             gender = serialized_players[i]["gender"]
             rank = serialized_players[i]["rank"]
-            self.player_list.append(Player(name, last_name, birth_date, gender, rank))
+            self.player_list.append(Player(name,
+                                           last_name,
+                                           birth_date,
+                                           gender,
+                                           rank))
 
         # Get tournament from database
         serialized_tournament = tournament_table.all()
@@ -92,7 +103,12 @@ class Controller:
                 gender = player_list[p]["gender"]
                 rank = player_list[p]["rank"]
                 score = player_list[p]["score"]
-                player = Player(name, last_name, birth_date, gender, rank, score)
+                player = Player(name,
+                                last_name,
+                                birth_date,
+                                gender,
+                                rank,
+                                score)
                 json_tournament.player_list.append(player)
 
             self.tournament_list.append(json_tournament)
@@ -113,7 +129,7 @@ class Controller:
 
     def choose_one(self):
         # Ajouter un joueur
-        number = input("Combien de Joueurs voulez vous ajouter ? (entrez un numéro):")
+        number = input("Combien de joueurs ? (entrez un numéro):")
         for i in range(int(number)):
             add_a_new_player(self.player_list)
         self.back_to_main_page()
@@ -125,13 +141,13 @@ class Controller:
             self.back_to_main_page()
         else:
             search_by = input(
-                "Vous voulez la liste des Joueurs par 1.Ordre Alphabétique/2.Classement:"
+                "Liste des Joueurs par 1.Ordre Alphabétique/2.Classement:"
             )
 
             if search_by == "1":
                 search_player_by_name(self.player_list)
                 update = input(
-                    "Voulez-vous modifier les informations d'un joueur ? 1.Oui/2.Non:"
+                    "Modifier les informations d'un joueur ? 1.Oui/2.Non:"
                 )
                 if update == "1":
                     update_delete_player(self.player_list)
@@ -143,7 +159,7 @@ class Controller:
             elif search_by == "2":
                 search_player_by_rank(self.player_list)
                 update = input(
-                    "Voulez-vous modifier les informations d'un joueur ? 1.Oui/2.Non:"
+                    "Modifier les informations d'un joueur ? 1.Oui/2.Non:"
                 )
                 if update == "1":
                     update_delete_player(self.player_list)
@@ -158,13 +174,13 @@ class Controller:
         if tournament_choice == "1":
             if len(self.player_list) < Tournament.NUMBER_OF_PLAYERS:
                 print(
-                    "Il n'y a pas assez de joueurs disponible pour un tournoi (Requis:'{}' Disponible:'{}')".format(
+                    "(Requis:'{}' Disponible:'{}')".format(
                         Tournament.NUMBER_OF_PLAYERS, len(self.player_list)
                     )
                 )
 
                 add = input(
-                    "Voulez-vous ajouter les participants maintenant ? 1.Oui/2.Non:"
+                    "Ajouter les participants ? 1.Oui/2.Non:"
                 )
                 if add == "1":
                     for i in range(
@@ -176,8 +192,11 @@ class Controller:
                     self.back_to_main_page()
 
             else:
-                while len(self.tournament_player_list) < Tournament.NUMBER_OF_PLAYERS:
-                    choose_a_player(self.player_list, self.tournament_player_list)
+                while len(
+                        self.tournament_player_list)\
+                        < Tournament.NUMBER_OF_PLAYERS:
+                    choose_a_player(self.player_list,
+                                    self.tournament_player_list)
                     print(
                         "Ajout d'un nouveau joueur {} sur {}".format(
                             len(self.tournament_player_list),
@@ -214,7 +233,7 @@ class Controller:
                     time_control = "Coup rapide"
                 else:
                     print(
-                        "Vu que vous n'avez rien choisi par défaut le tournoi sera contrôler en Bullet"
+                        "Le tournoi sera contrôler en Bullet"
                     )
                     time_control = "Bullet"
 
@@ -250,7 +269,8 @@ class Controller:
                     self.continuer(new_tournament)
                     self.change_ranking()
 
-                ranking = sorted(new_tournament.player_list, key=attrgetter("rank"))
+                ranking = sorted(new_tournament.player_list,
+                                 key=attrgetter("rank"))
                 print("Le vainqueur du tournoi est {}".format(ranking[0]))
                 resume = input("Quelles sont vos remarques sur ce Tournoi: ")
                 new_tournament.description = resume
@@ -284,7 +304,9 @@ class Controller:
             )
 
             rank_player(tournament.player_list)
-            for i in range(tournament.NUMBER_OF_ROUNDS - len(tournament.tour_list)):
+            for i in range(
+                    tournament.NUMBER_OF_ROUNDS - len(tournament.tour_list)
+            ):
                 tournament_round(
                     tournament,
                     tournament.player_list,
@@ -339,7 +361,7 @@ class Controller:
     def change_ranking(self):
         """Use if you want to change a player rank during a tournament"""
         change = input(
-            "Voulez changer le classement général d'un ou plusieurs joueurs  ? 1.Oui/2.Non:"
+            "Changer le classement général d'un joueur ? 1.Oui/2.Non:"
         )
 
         if change == "1":

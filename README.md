@@ -8,7 +8,26 @@ interesting no ?
 
 (yes i know is not but act like it is ok ? thank you next)
 
-## INTRODUCTION
+## INSTALLATION
+To use this wonderful appliaction (yes wonderful) please:
+
+ -Download the directories 'Models', 'Views', 'Controllers'
+ 
+ -Download gameset.py and requirements.txt
+ 
+ -Create a virtual environment by run `python -m venv env`
+ 
+ -Activate your environment by run `source env/bin/activate`
+ 
+ -Run `pip install -r requirements.txt`
+ 
+ -Start enjoy Gameset by run `python gameset.py`
+  
+ you can create your self flake8 report directory if you want just run`flake8 --format=html --htmldir=flake-report` 
+ 
+ 
+ 
+## HOW TO USE
 
 i said "for anygame" but in this case the script of Gameset is make for a chess game (why not?)
 let me tell you what's happening when you run the application
@@ -106,19 +125,6 @@ You choose a tournament and you can check:
 #### 5.Leave
 NOT YET !!
 
-## INSTALLATION
-To use this wonderful appliaction (yes wonderful) please:
-
-    -Download the directories 'Models', 'Views', 'Controllers' 
-    -Download gameset.py and requirements.txt
-    -Create a virtual environment by run `python -m venv env`
-    -Activate your environment by run `source env/bin/activate`
-    -Run `pip install -r requirements.txt`
-    -Start enjoy Gameset by run `python gameset.py`
-  
- you can create your self flake8 report directory if you want just run`flake8 --format=html --htmldir=flake-report` 
- 
- Thank you for reading this , now you may leave ;)
  
  ## CONTRIBUTIONS
  ME MYSELF AND I

@@ -11,9 +11,9 @@ interesting no ?
 ## INSTALLATION
 To use this wonderful appliaction (yes wonderful) please:
 
- -Download the directories 'Models', 'Views', 'Controllers'
+ -Clone the url of the repository
  
- -Download gameset.py and requirements.txt
+ -Run `git clone url_of_repository`
  
  -Create a virtual environment by run `python -m venv env`
  

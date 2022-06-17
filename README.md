@@ -127,5 +127,5 @@ NOT YET !!
 
  
  ## CONTRIBUTIONS
- ME MYSELF AND I
- and my mentor (just a little^^ but i'm still thankful)
+[Luc Aka-Evy
+](https://github.com/Luc-Aka-Evy)
